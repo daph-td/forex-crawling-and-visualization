@@ -14,7 +14,9 @@ ipython-genutils==0.2.0
 jedi==0.18.0
 jupyter-client==6.1.11
 jupyter-core==4.7.1
+matplotlib==3.3.4
 numpy==1.19.4
+pandas==1.2.3
 parso==0.8.1
 pathlib==1.0.1
 pexpect==4.8.0
