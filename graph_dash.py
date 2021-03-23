@@ -174,9 +174,9 @@ elif style == 2:
     input_average = int(input('Please select the moving average period: '))
 
     df_custom = pd.read_csv(f'realTime_{result}.csv')
-    timeframe = list(df_custom.iloc[5300:, 1].values)
-    timespan = list(df_custom.iloc[5300:, 2].values)
-    percentage = list(df_custom.iloc[5300:, 3].values)
+    timeframe = list(df_custom.iloc[:, 1].values)
+    timespan = list(df_custom.iloc[:, 2].values)
+    percentage = list(df_custom.iloc[:, 3].values)
 
     for a in timeframe:
         if starting in a:
