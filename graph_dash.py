@@ -311,8 +311,8 @@ elif style == 3:
                 name='Percentage',
                 )
 
-        return {'data': [data_1, data_2, data_3],'layout' : go.Layout(xaxis=dict(range=[min(xs_1),max(xs_1)]),
-                                        
+        return {'data': [data_1, data_2, data_3],'layout' : go.Layout(xaxis=dict(range=[min(xs_1),max(xs_1)]), 
+                                                                      yaxis=dict(range=[min(ys_1),max(ys_1)]),)}                                        
 
 if __name__ == '__main__':
     app.run_server(debug=True)
