@@ -4,9 +4,16 @@ backcall==0.2.0
 beautifulsoup4==4.9.3
 certifi==2020.6.20
 chardet==3.0.4
+dash==0.29.0
+dash-core-components==1.15.0
+dash-html-components==1.1.2
+dash-renderer==1.9.0
+dash-table==4.11.2
 decorator==4.4.2
 distlib==0.3.1
 filelock==3.0.12
+Flask==1.1.2
+Flask-Compress==1.9.0
 idna==2.10
 ipykernel==5.5.0
 ipython==7.16.0
@@ -21,6 +28,8 @@ parso==0.8.1
 pathlib==1.0.1
 pexpect==4.8.0
 pickleshare==0.7.5
+pip==21.0.1
+plotly==4.14.3
 prompt-toolkit==3.0.16
 ptyprocess==0.7.0
 Pygments==2.8.0
