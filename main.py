@@ -59,28 +59,31 @@ def scrape(code):
     blue_span = []
     timespan = []
     timemark = []
-    page_source = initDriver(driver)
-    c_tags = loadTags(page_source)
-    starttime = time.time()
-    now = str(dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-    print('Time start: ', now)
+    try:
+        page_source = initDriver(driver)
+        c_tags = loadTags(page_source)
+        starttime = time.time()
+        now = str(dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+        print('Time start: ', now)
 
-    if len(c_tags) == 0:
-        print('Cant load the data \n')
+        if len(c_tags) == 0:
+            print('Cant load the data \n')
+            return None
+
+        elif len(c_tags) != 0:
+            timespan.append(starttime)
+            timemark.append(now)
+            try:
+                blue.append(getBlue(c_tags[code]))
+                blue_span.append([now, starttime, getBlue(c_tags[code])])
+            except:
+                pass
+            print('Orginal blue: ', blue)
+
+        print('\n')
+        return timemark, timespan, blue
+    except:
         return None
-
-    elif len(c_tags) != 0:
-        timespan.append(starttime)
-        timemark.append(now)
-        try:
-            blue.append(getBlue(c_tags[code]))
-            blue_span.append([now, starttime, getBlue(c_tags[code])])
-        except:
-            pass
-        print('Orginal blue: ', blue)
-
-    print('\n')
-    return timemark, timespan, blue
 print('- Finish defining scraper')
 
 pairs = ['AUD_CAD', 'AUD_JPY', 'AUD_NZD', 'AUD_USD', 'CAD_JPY', 'DAX', 
@@ -95,18 +98,21 @@ name = pairs[c_code]
 
 print(f'---Scraping {pairs[c_code]}---')
 while True:
-    result = scrape(c_code)
-    if result == None:
-        continue
-    elif result != None:
-        try:
-            print('Round: ', i)
-            timemark, timespan, blue = result
-            df = pd.DataFrame({'Time':timemark, 'Timespan':timespan, 'Data':blue})
-            df.to_csv(f'realTime_{name}.csv', mode='a', header=False)
-            i += 1
-        except:
+    try:
+        result = scrape(c_code)
+        if result == None:
             continue
+        elif result != None:
+            try:
+                print('Round: ', i)
+                timemark, timespan, blue = result
+                df = pd.DataFrame({'Time':timemark, 'Timespan':timespan, 'Data':blue})
+                df.to_csv(f'realTime_{name}.csv', mode='a', header=False)
+                i += 1
+            except:
+                continue
+    except:
+        pass
 
 '''
 AUD/CAD = 0
