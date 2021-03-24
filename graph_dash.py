@@ -84,16 +84,14 @@ pairs = ['AUD_CAD', 'AUD_JPY', 'AUD_NZD', 'AUD_USD', 'CAD_JPY', 'DAX',
 print('''
 Which style of chart do you chose? 
    1. Starting points - Ending points (fixed-time)
-   2. Starting points - Number of bins (fixed-time)
-   3. Starting points - Now (real-time)
-      ''')
-style = int(input('Please enter a number: '))
+   2. Starting points - Number of bins (fixed-time)''')
+style = int(input('Please select the style: '))
 
 if style == 1:
+    result = pairs[int(input('Please select the currency code: '))]
     starting = input('Please select the starting time (eg. YYYY-MM-DD hh:mm): ')
     ending = input('Please select the ending time (eg. YYYY-MM-DD hh:mm): ')
-    custom_time = int(input('Please select the timeframe (eg. 1min, 5min): '))
-    result = pairs[int(input('Please select the currency code: '))]
+    custom_time = int(input('Please select the timeframe (eg. 1min, 5min, 1440min): '))
     input_average = int(input('Please select the moving average period: '))
 
     df_custom = pd.read_csv(f'realTime_{result}.csv')
@@ -170,7 +168,7 @@ elif style == 2:
     result = pairs[int(input('Please select the currency code: '))]
     starting = input('Please select the starting time (eg. YYYY-MM-DD hh:mm): ')
     input_range = int(input('Please select the chart range (eg. 10bins, 20bins): '))
-    custom_time = int(input('Please select the timeframe (eg. 1min, 5min): '))
+    custom_time = int(input('Please select the timeframe (eg. 1min, 5min, 1440min): '))
     input_average = int(input('Please select the moving average period: '))
 
     df_custom = pd.read_csv(f'realTime_{result}.csv')
@@ -224,7 +222,6 @@ elif style == 2:
                     'data': [
                         {'x':xs_1, 'y': ys_1, 'type':'line', 'name':'percentage'},
                         {'x':xs_1, 'y': ys_MA, 'type':'line', 'name':f'MA_{input_average}'},
-                        # {'x':chosen_timemark[:input_range], 'y': chosen_blue[:input_range], 'type':'bar', 'name':'percentage'}
                         ],
                     'layout':{
                         'title': f'{result}: {custom_time} minutes'
@@ -236,83 +233,6 @@ elif style == 2:
                         ]
                     })
         ])
-
-elif style == 3:
-    result = pairs[int(input('Please select the currency code: '))]
-    starting = input('Please select the starting time (eg. YYYY-MM-DD hh:mm): ')
-    input_range = int(input('Please select the chart range (eg. 10bins, 20bins): '))
-    custom_time = int(input('Please select the timeframe (eg. 1min, 5min): ')) # 1min, 5min, 10min
-    input_average = int(input('Please select the moving average period: '))
-  
-    xs_1 = deque(maxlen=input_range)
-    xs_1.append(custom_time)
-
-    app = dash.Dash(__name__)
-    app.layout = html.Div(
-        [
-            html.Div(children=f'{result}: {custom_time} minutes'),
-            dcc.Graph(id='live-graph', animate=True),
-            dcc.Interval(
-                id='graph-update',
-                interval=1000,
-                n_intervals=0
-            ),
-        ]
-    )
-
-    @app.callback(Output('live-graph', 'figure'),
-            [Input('graph-update', 'n_intervals')])
-
-    def update_graph_line(n):
-        df_custom = pd.read_csv(f'realTime_{result}.csv')
-        timeframe = list(df_custom.iloc[:, 1].values)
-        timespan = list(df_custom.iloc[:, 2].values)
-        percentage = list(df_custom.iloc[:, 3].values)
-
-        for a in timeframe:
-            if starting in a:
-                index = timeframe.index(a)
-
-        starting_point = index
-                
-        all_blue = []
-        for b in range(len(timeframe)):
-            if b >= starting_point:
-                all_blue.append([timeframe[b], timespan[b], percentage[b]])
-
-        custom = getChosenPoints(custom_time, all_blue)
-
-        chosen_timemark = [i[0] for i in custom]
-        chosen_blue = [i[-1] for i in custom]
-        df = pd.DataFrame({'Time':chosen_timemark,'Data':chosen_blue})
-        MA_ls = plotMA(input_average, chosen_blue)
-
-        # all data
-        ys_1 = list(df.iloc[:, 1].values)[-input_range:]
-        xs_1 = list(df.iloc[:, 0].values)[-input_range:]
-        ys_MA = MA_ls[-input_range:]
-
-        data_1 = plotly.graph_objs.Scatter(
-                x=xs_1,
-                y=ys_1,
-                name='Percentage',
-                mode= 'lines+markers'
-                )
-        data_2 = plotly.graph_objs.Scatter(
-                x=xs_1,
-                y=ys_MA,
-                name=f'MA_{input_average}',
-                mode= 'lines+markers',
-                marker_color='rgba(152, 0, 0, .8)'
-                )
-        data_3 = plotly.graph_objs.Bar(
-                x=xs_1,
-                y=ys_1,
-                name='Percentage',
-                )
-
-        return {'data': [data_1, data_2, data_3],'layout' : go.Layout(xaxis=dict(range=[min(xs_1),max(xs_1)]), 
-                                                                      yaxis=dict(range=[min(ys_1),max(ys_1)]),)}                                        
 
 if __name__ == '__main__':
     app.run_server(debug=True,host='0.0.0.0')
