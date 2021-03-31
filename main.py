@@ -33,6 +33,7 @@ print('- Finish initializing a browser')
 def initDriver(dv):
     # driver = webdriver.Chrome('chromedriver',options=opt)
     dv.get("https://www.fxblue.com/market-data/tools/sentiment")
+    WebDriverWait(dv, 10).until(EC.presence_of_element_located((By.ID, "SentimentContainer")))    
     content = dv.page_source.encode('utf-8').strip()
     soup = BeautifulSoup(content, "html.parser")
     return soup
@@ -104,7 +105,7 @@ while True:
             continue
         elif result != None:
             try:
-                print('Round: ', i)
+                print(f'{name} Round: {i}')
                 timemark, timespan, blue = result
                 df = pd.DataFrame({'Time':timemark, 'Timespan':timespan, 'Data':blue})
                 df.to_csv(f'realTime_{name}.csv', mode='a', header=False)
