@@ -4,11 +4,21 @@ import dash_core_components as dcc
 import dash_html_components as html
 import plotly
 import plotly.graph_objs as go
-from collections import deque
-import random
 import statistics as sts
 import pandas as pd
+from pymongo import MongoClient
 print('Done importing!')
+
+# connect to MongoDB, change the << MONGODB URL >> to reflect your own connection string
+client = MongoClient("mongodb+srv://Kingboss01:kingboss@cluster0.arwti.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+database_name = 'currencypairs'
+db = client[database_name]
+print(f'Connected to MongoDB: {database_name}')
+
+# Issue the serverStatus command and print the results
+print('Check Server Status Result')
+serverStatusResult = db.command("serverStatus")
+# pprint(serverStatusResult)
 
 def getDistance(base, next_point, input_time):
     distance = abs(abs((base - next_point)/60) - input_time)
@@ -94,11 +104,30 @@ if style == 1:
     custom_time = int(input('Please select the timeframe (eg. 1min, 5min, 1440min): '))
     input_average = int(input('Please select the moving average period: '))
 
-    df_custom = pd.read_csv(f'realTime_{result}.csv')
-    timeframe = list(df_custom.iloc[:, 1].values)
-    timespan = list(df_custom.iloc[:, 2].values)
-    percentage = list(df_custom.iloc[:, 3].values)
+    # Load the data to the program
 
+    #1: Load CSV file from the local machine
+    # df_custom = pd.read_csv(f'realTime_{result}.csv')
+    # timeframe = list(df_custom.iloc[:, 1].values)
+    # timespan = list(df_custom.iloc[:, 2].values)
+    # percentage = list(df_custom.iloc[:, 3].values)
+
+    #2: Load data from MongoDB
+    collection = db[result]
+    mongo_data = collection.find({},{"_id":0})
+    mongo_docs = list(mongo_data)
+    custom_ls = []
+    for data_point in mongo_docs[:50]:
+        point = []
+        for title, value in data_point.items():
+            point.append(value)
+        custom_ls.append(point)
+
+    timeframe = [i[0] for i in custom_ls]
+    timespan = [i[1] for i in custom_ls]
+    percentage = [i[2] for i in custom_ls]
+
+    # Processing data
     for a in timeframe:
         if starting in a:
             index_start = timeframe.index(a)
@@ -171,10 +200,28 @@ elif style == 2:
     custom_time = int(input('Please select the timeframe (eg. 1min, 5min, 1440min): '))
     input_average = int(input('Please select the moving average period: '))
 
-    df_custom = pd.read_csv(f'realTime_{result}.csv')
-    timeframe = list(df_custom.iloc[:, 1].values)
-    timespan = list(df_custom.iloc[:, 2].values)
-    percentage = list(df_custom.iloc[:, 3].values)
+    # Load data
+
+    #1: Load CSV file from local machine
+    # df_custom = pd.read_csv(f'realTime_{result}.csv')
+    # timeframe = list(df_custom.iloc[:, 1].values)
+    # timespan = list(df_custom.iloc[:, 2].values)
+    # percentage = list(df_custom.iloc[:, 3].values)
+
+    #2: Load data from MongoDB
+    collection = db[result]
+    mongo_data = collection.find({},{"_id":0})
+    mongo_docs = list(mongo_data)
+    custom_ls = []
+    for data_point in mongo_docs[:50]:
+        point = []
+        for title, value in data_point.items():
+            point.append(value)
+        custom_ls.append(point)
+
+    timeframe = [i[0] for i in custom_ls]
+    timespan = [i[1] for i in custom_ls]
+    percentage = [i[2] for i in custom_ls]
 
     for a in timeframe:
         if starting in a:
@@ -236,3 +283,7 @@ elif style == 2:
 
 if __name__ == '__main__':
     app.run_server(debug=True,host='0.0.0.0')
+
+
+
+

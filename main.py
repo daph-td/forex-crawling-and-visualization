@@ -15,6 +15,19 @@ import sys
 sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
 print('- Finish importing standard packages')
 
+from pymongo import MongoClient
+from random import randint
+# pprint library is used to make the output look more pretty
+from pprint import pprint
+
+# connect to MongoDB, change the << MONGODB URL >> to reflect your own connection string
+client = MongoClient("mongodb+srv://Kingboss01:kingboss@cluster0.arwti.mongodb.net/database_test?retryWrites=true&w=majority")
+db=client.currencypairs
+
+# Issue the serverStatus command and print the results
+serverStatusResult=db.command("serverStatus")
+pprint(serverStatusResult)
+
 # 2 Setup selenium webdriver
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument('--headless')
@@ -68,21 +81,20 @@ def scrape(code):
         print('Time start: ', now)
 
         if len(c_tags) == 0:
-            print('Cant load the data \n')
+            print('***Cant load the data')
             return None
 
         elif len(c_tags) != 0:
             timespan.append(starttime)
             timemark.append(now)
             try:
-                blue.append(getBlue(c_tags[code]))
+                blue_input = getBlue(c_tags[code])
+                blue.append(blue_input)
                 blue_span.append([now, starttime, getBlue(c_tags[code])])
             except:
                 pass
             print('Orginal blue: ', blue)
-
-        print('\n')
-        return timemark, timespan, blue
+        return timemark, timespan, blue, now, starttime, blue_input
     except:
         return None
 print('- Finish defining scraper')
@@ -97,7 +109,7 @@ i = 1
 c_code = int(input('Please choose the currency based on its code: '))
 name = pairs[c_code]
 
-print(f'---Scraping {pairs[c_code]}---')
+print(f'---Scraping {pairs[c_code]}---\n')
 while True:
     try:
         result = scrape(c_code)
@@ -105,15 +117,24 @@ while True:
             continue
         elif result != None:
             try:
-                print(f'{name} Round: {i}')
-                timemark, timespan, blue = result
+                print(f'\n{name} Round: {i}')
+                timemark, timespan, blue, now, starttime, blue_input = result
                 df = pd.DataFrame({'Time':timemark, 'Timespan':timespan, 'Data':blue})
                 df.to_csv(f'realTime_{name}.csv', mode='a', header=False)
+                currencypairs_data = {
+                    'Time': now,
+                    'Timespan': starttime,
+                    'Data': blue_input
+                }
+                mongoData = db[name].insert_one(currencypairs_data)
+                print('mongoData:', mongoData)
+                print(f'To MongoDB: {mongoData.inserted_id}')
                 i += 1
             except:
                 continue
     except:
         pass
+
 
 '''
 AUD/CAD = 0
