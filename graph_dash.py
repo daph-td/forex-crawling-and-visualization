@@ -10,7 +10,7 @@ from pymongo import MongoClient
 print('Done importing!')
 
 # connect to MongoDB, change the << MONGODB URL >> to reflect your own connection string
-client = MongoClient("mongodb+srv://Kingboss01:kingboss@cluster0.arwti.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+client = MongoClient("mongodb+srv://narian:kingboss007@cluster0.kxhan.mongodb.net/currencypairs?retryWrites=true&w=majority")
 database_name = 'currencypairs'
 db = client[database_name]
 print(f'Connected to MongoDB: {database_name}')
