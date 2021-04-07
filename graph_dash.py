@@ -99,6 +99,7 @@ style = int(input('Please select the style: '))
 
 if style == 1:
     result = pairs[int(input('Please select the currency code: '))]
+    print(f'{result} selected!')
     starting = input('Please select the starting time (eg. YYYY-MM-DD hh:mm): ')
     ending = input('Please select the ending time (eg. YYYY-MM-DD hh:mm): ')
     custom_time = int(input('Please select the timeframe (eg. 1min, 5min, 1440min): '))
@@ -117,7 +118,7 @@ if style == 1:
     mongo_data = collection.find({},{"_id":0})
     mongo_docs = list(mongo_data)
     custom_ls = []
-    for data_point in mongo_docs[:50]:
+    for data_point in mongo_docs:
         point = []
         for title, value in data_point.items():
             point.append(value)
@@ -195,6 +196,7 @@ if style == 1:
 
 elif style == 2:
     result = pairs[int(input('Please select the currency code: '))]
+    print(f'{result} selected!')
     starting = input('Please select the starting time (eg. YYYY-MM-DD hh:mm): ')
     input_range = int(input('Please select the chart range (eg. 10bins, 20bins): '))
     custom_time = int(input('Please select the timeframe (eg. 1min, 5min, 1440min): '))
@@ -213,7 +215,7 @@ elif style == 2:
     mongo_data = collection.find({},{"_id":0})
     mongo_docs = list(mongo_data)
     custom_ls = []
-    for data_point in mongo_docs[:50]:
+    for data_point in mongo_docs:
         point = []
         for title, value in data_point.items():
             point.append(value)
