@@ -1,0 +1,4 @@
+AUD_USD = 3
+EUR_JPY = 10
+EUR_USD = 11
+GBP_USD = 16
