@@ -4,7 +4,7 @@ import pandas as pd
 # pprint library is used to make the output look more pretty
 from pprint import pprint
 
-def PullfromMongoDB(currency_name):
+def PullfromMongoDB(currency_name, collection):
     # connect to MongoDB, change the << MONGODB URL >> to reflect your own connection string
     path = '/Users/admin/Environments/currencypairs/mongo_token.txt' 
     token = open(path, "r")

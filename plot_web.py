@@ -81,13 +81,15 @@ def update_data(pair_input, style_input, starting, ending, input_range, custom_t
     ys_MA = []
     ending_point = -1
     starting_point = 0
-    timeframe, timespan, percentage = PullfromMongoDB(pair_input)
+    collection = ''
+    timeframe, timespan, percentage = PullfromMongoDB(pair_input, collection)
     xs_1, ys_1, ys_MA = plotChart(pair_input, style_input, starting, ending, input_range, custom_time, input_average, starting_point, ending_point, xs_1, ys_1, ys_MA, timeframe, timespan, percentage)
+    ys_100 = [100 for i in range(len(xs_1))]
 
     message = f'Confirmation: \n- Chosen pair: {pair_input} ... \n- Chosen style: {style_input} ... \n- Starting time: {starting} ... \n- Ending time: {ending} ... \n- No. of bins: {input_range} ... \n- Timeframe: {custom_time} ... \n- Moving average: {input_average} ...'
     print(message)
 
-    graph = dcc.Graph(id='currency_line', 
+    graph_1 = dcc.Graph(id='currency_line', 
                         figure={
                             'data': [
                                 {'x':xs_1, 'y': ys_1, 'type':'line', 'name':'percentage'},
@@ -100,9 +102,15 @@ def update_data(pair_input, style_input, starting, ending, input_range, custom_t
                             'data': [
                                 {'x':xs_1, 'y':ys_1, 'type':'bar', 'name':'percentage'}
                                 ]
+                            }), dcc.Graph(id='currency_line_base', 
+                        figure={
+                            'data': [
+                                {'x':xs_1, 'y': ys_1, 'type':'line', 'name':'percentage'},
+                                {'x':xs_1, 'y': ys_100, 'type':'bar', 'name':f'100%'},
+                                ]
                             })
 
-    return graph
+    return graph_1
 
 if __name__ == '__main__':
     graph_test.run_server(debug=True,host='0.0.0.0')
