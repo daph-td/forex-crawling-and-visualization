@@ -4,71 +4,7 @@ from matplotlib.animation import FuncAnimation
 from matplotlib import style
 import statistics as sts
 import matplotlib.gridspec as gridspec
-
-def getDistance(base, next_point, input_time):
-    distance = abs(abs((base - next_point)/60) - input_time)
-    return distance
-
-def getNextChosenPoint(input_time, ls, start_point_index):
-    comparison_group = []
-
-    for i in ls[start_point_index+1:]:
-        base = ls[start_point_index][1]
-        next_point = i[1]
-        distance_base_nextpoint = getDistance(base, next_point, input_time)
-        if -input_time <= distance_base_nextpoint <= input_time:
-            comparison_group.append([distance_base_nextpoint, i])
-        else:
-            break
-
-    if len(comparison_group) > 0:
-        chosen_distance = min(comparison_group)
-        next_chosen_point = chosen_distance[1]
-        next_chosen_point_index = ls.index(next_chosen_point)
-
-    elif len(comparison_group) == 0:
-        try:
-            next_chosen_point = ls[start_point_index + 1]
-            next_chosen_point_index = ls.index(next_chosen_point)
-            
-        except IndexError:
-            return
-
-    return next_chosen_point_index
-
-def getChosenPoints(input_time, ls):
-    start_point_number = 0
-    chosen_points = [ls[start_point_number]]
-    while start_point_number < len(ls):
-        next_chosen_point = getNextChosenPoint(input_time, ls, start_point_number)
-        try:
-            chosen_points.append(ls[next_chosen_point])
-            start_point_number = next_chosen_point
-        except TypeError:
-            break
-    
-    return chosen_points
-
-def plotMA(input_average, ls):
-    MA_ls = []
-    for n in range(len(ls)):
-        if n >= (input_average-1):
-            data_range = ls[n-(input_average-1):n+1]
-            MA = sts.mean(data_range)
-        else:
-            MA = 0
-        MA_ls.append(MA)
-    return MA_ls
-
-def plot_MA(input_average, custom, custom_previous_chosen_reverse):
-    MA_ls = []
-    MA_custom = custom_previous_chosen_reverse + custom
-    for n in range(len(custom)):
-        data_range = MA_custom[n:input_average+n]
-        MA = sts.mean(data_range)
-        MA_ls.append(MA)
-    return MA_ls
-
+from graphs import *
 print('All done!!!')
 
 # Setup figure and subplots

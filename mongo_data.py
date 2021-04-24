@@ -13,12 +13,12 @@ def PullfromMongoDB(currency_name):
     db = client[database_name]
 
     # Issue the serverStatus command and print the results
-    print('Check Server Status Result')
+    print('Pulling data from MongoDB ...')
     serverStatusResult = db.command("serverStatus")
     # pprint(serverStatusResult)
     try:
         collection = db[currency_name]
-    except pymongo.errors.InvalidName:
+    except:
         print('Waiting for the input ...')
 
     mongo_data = collection.find({},{"_id":0})
