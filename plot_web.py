@@ -66,13 +66,13 @@ graph_test.layout = html.Div(children=[
 
 @graph_test.callback(
     Output(component_id="style_output", component_property="children"),
-    Input(component_id="pair_input", component_property="value"),    
+    [Input(component_id="pair_input", component_property="value"),    
     Input(component_id="style_input", component_property="value"),
     Input(component_id="starting", component_property="value"),
     Input(component_id="ending", component_property="value"),
     Input(component_id="input_range", component_property="value"),
     Input(component_id="custom_time", component_property="value"),
-    Input(component_id="input_average", component_property="value")
+    Input(component_id="input_average", component_property="value")]
 )
 
 def update_data(pair_input, style_input, starting, ending, input_range, custom_time, input_average):
