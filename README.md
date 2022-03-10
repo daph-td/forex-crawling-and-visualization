@@ -7,4 +7,4 @@ Features:
 - Web browser for user to input from the frontend
 
 Screenshot of the program:
-![alt text](![Uploading Screen Shot 2022-03-10 at 8.39.04 PM.png…]())
+![alt text](file:///Users/admin/Desktop/Screen%20Shot%202022-03-10%20at%208.39.04%20PM.png)
