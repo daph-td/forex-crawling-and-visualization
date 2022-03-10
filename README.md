@@ -7,4 +7,7 @@ Features:
 - Web browser for user to input from the frontend
 
 Screenshot of the program:
-![Screenshot](/Users/admin/Desktop/Screen%20Shot%202022-03-10%20at%208.39.04%20PM.png)
+<p align="center">
+  <img src="file:///Users/admin/Desktop/Screen%20Shot%202022-03-10%20at%208.39.04%20PM.png" width="350" title="hover text">
+  <img src="file:///Users/admin/Desktop/Screen%20Shot%202022-03-10%20at%208.39.04%20PM.png" width="350" alt="accessibility text">
+</p>
