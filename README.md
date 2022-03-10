@@ -1,4 +1,6 @@
 # forex-crawling-and-visualization
+A full stack website where users can input their currency pairs of choice, time intervals (eg. starting date, ending date), timeframe (eg. 1 day, 4 hours, 15 minutes, etc.), and a period of moving average to output the visualization of their inputs.
+
 This project collects the forex data in real time and visualize them on web browser based on user input. The crawler was deployed to gcloud to run 24/7 and the data are storing in MongoDB. 
 
 ### Features:
