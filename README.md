@@ -7,4 +7,4 @@ Features:
 - Web browser for user to input from the frontend
 
 Screenshot of the program:
-![alt text](https://ibb.co/zX5rNt1)
+!(https://ibb.co/zX5rNt1)
