@@ -8,6 +8,5 @@ Features:
 
 Screenshot of the program:
 <p align="center">
-  <img src="file:///Users/admin/Desktop/Screen%20Shot%202022-03-10%20at%208.39.04%20PM.png" width="350" title="hover text">
-  <img src="file:///Users/admin/Desktop/Screen%20Shot%202022-03-10%20at%208.39.04%20PM.png" width="350" alt="accessibility text">
+  <img src="/Users/admin/Desktop/Screen%20Shot%202022-03-10%20at%208.39.04%20PM.png" width="350" title="hover text">
 </p>
