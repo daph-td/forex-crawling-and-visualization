@@ -7,4 +7,4 @@ Features:
 - Web browser for user to input from the frontend
 
 Screenshot of the program:
-![Screenshot](file:///Users/admin/Desktop/Screen%20Shot%202022-03-10%20at%208.39.04%20PM.png)
+![Screenshot](/Users/admin/Desktop/Screen%20Shot%202022-03-10%20at%208.39.04%20PM.png)
